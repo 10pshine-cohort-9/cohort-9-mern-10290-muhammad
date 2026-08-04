@@ -1,0 +1,436 @@
+:root {
+  --ink: #12182b;
+  --ink-soft: #1b2338;
+  --paper: #fbf8f2;
+  --paper-line: #e4ddc9;
+  --gold: #c89b3c;
+  --gold-dark: #a07d2b;
+  --teal: #2f6f62;
+  --text-on-ink: #f3efe4;
+  --text-on-ink-dim: #a9b0c4;
+  --text-on-paper: #23262f;
+  --text-on-paper-muted: #6b6f7a;
+  --danger: #b8442f;
+
+  --font-display: 'Fraunces', 'Iowan Old Style', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text-on-paper);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+input,
+textarea {
+  font-family: var(--font-body);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ---------- Auth layout: split panel with a stitched perforation ---------- */
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+}
+
+@media (max-width: 860px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+.auth-brand {
+  background: var(--ink);
+  color: var(--text-on-ink);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+@media (max-width: 860px) {
+  .auth-brand {
+    padding: 2.5rem 2rem;
+  }
+}
+
+.auth-brand::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background-image: radial-gradient(circle, var(--text-on-ink-dim) 1.4px, transparent 1.4px);
+  background-size: 1px 14px;
+  opacity: 0.35;
+}
+
+@media (max-width: 860px) {
+  .auth-brand::after {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: 1px;
+    background-size: 14px 1px;
+  }
+}
+
+.auth-brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+}
+
+.auth-brand-mark-glyph {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--gold);
+}
+
+.auth-brand-quote {
+  max-width: 26ch;
+}
+
+.auth-brand-quote h1 {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.2;
+  color: var(--text-on-ink);
+}
+
+.auth-brand-quote p {
+  margin-top: 0.9rem;
+  color: var(--text-on-ink-dim);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.auth-brand-foot {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-on-ink-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.auth-form-side {
+  background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+.auth-card h2 {
+  font-size: 1.7rem;
+  color: var(--text-on-paper);
+}
+
+.auth-card-sub {
+  margin-top: 0.5rem;
+  color: var(--text-on-paper-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.auth-form {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-on-paper);
+}
+
+.field input {
+  border: 1.5px solid var(--paper-line);
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 0.7rem 0.85rem;
+  font-size: 0.95rem;
+  color: var(--text-on-paper);
+  transition: border-color 0.15s ease;
+}
+
+.field input:hover {
+  border-color: #cfc6a8;
+}
+
+.field input:focus {
+  border-color: var(--gold);
+}
+
+.btn {
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: transform 0.08s ease, opacity 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: #221a04;
+}
+
+.btn-primary:hover {
+  background: var(--gold-dark);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-on-paper);
+  border: 1.5px solid var(--paper-line);
+}
+
+.btn-ghost:hover {
+  border-color: var(--gold);
+  color: var(--gold-dark);
+}
+
+.auth-switch {
+  margin-top: 1.6rem;
+  font-size: 0.88rem;
+  color: var(--text-on-paper-muted);
+}
+
+.auth-switch a {
+  color: var(--gold-dark);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+.form-error {
+  background: #fbe9e5;
+  border: 1px solid #edc4b8;
+  color: var(--danger);
+  border-radius: var(--radius);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.form-success {
+  background: #e7f1ee;
+  border: 1px solid #bcd9cf;
+  color: var(--teal);
+  border-radius: var(--radius);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+/* ---------- App shell (used by Profile / future Dashboard) ---------- */
+
+.app-shell {
+  min-height: 100vh;
+  background: var(--paper);
+}
+
+.app-nav {
+  background: var(--ink);
+  color: var(--text-on-ink);
+  padding: 1.1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-nav-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+.app-nav-mark-glyph {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--gold);
+}
+
+.app-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.app-nav-link {
+  font-size: 0.85rem;
+  color: var(--text-on-ink-dim);
+  text-decoration: none;
+}
+
+.app-nav-link:hover {
+  color: var(--text-on-ink);
+}
+
+.app-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.profile-card {
+  background: #fff;
+  border: 1.5px solid var(--paper-line);
+  border-radius: 14px;
+  padding: 2rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1.5px dashed var(--paper-line);
+}
+
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+}
+
+.profile-header h2 {
+  font-size: 1.4rem;
+}
+
+.profile-header-sub {
+  color: var(--text-on-paper-muted);
+  font-size: 0.88rem;
+  margin-top: 0.2rem;
+}
+
+.profile-fields {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.profile-meta {
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-on-paper-muted);
+  letter-spacing: 0.02em;
+}
+
+.profile-actions {
+  margin-top: 1.8rem;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.loading-line {
+  color: var(--text-on-paper-muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
