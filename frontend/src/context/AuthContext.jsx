@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import * as api from '../services/api';
 
 const AuthContext = createContext(null);
@@ -31,17 +32,29 @@ export function AuthProvider({ children }) {
   }, [loadCurrentUser]);
 
   async function signup(payload) {
-    const res = await api.signup(payload);
-    localStorage.setItem(TOKEN_KEY, res.token);
-    setUser(res.data);
-    return res;
+    try {
+      const res = await api.signup(payload);
+      localStorage.setItem(TOKEN_KEY, res.token);
+      setUser(res.data);
+      return res;
+    } catch (err) {
+      localStorage.removeItem(TOKEN_KEY);
+      setUser(null);
+      throw err;
+    }
   }
 
   async function login(payload) {
-    const res = await api.login(payload);
-    localStorage.setItem(TOKEN_KEY, res.token);
-    setUser(res.data);
-    return res;
+    try {
+      const res = await api.login(payload);
+      localStorage.setItem(TOKEN_KEY, res.token);
+      setUser(res.data);
+      return res;
+    } catch (err) {
+      localStorage.removeItem(TOKEN_KEY);
+      setUser(null);
+      throw err;
+    }
   }
 
   async function logout() {
@@ -54,15 +67,23 @@ export function AuthProvider({ children }) {
   }
 
   async function updateProfile(payload) {
-    const res = await api.updateMe(payload);
-    setUser(res.data);
-    return res;
+    try {
+      const res = await api.updateMe(payload);
+      setUser(res.data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
   }
 
   const value = { user, loading, signup, login, logout, updateProfile };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export function useAuth() {
   const ctx = useContext(AuthContext);

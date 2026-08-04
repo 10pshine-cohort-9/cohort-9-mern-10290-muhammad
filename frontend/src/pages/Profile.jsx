@@ -4,7 +4,8 @@ import { useAuth } from '../context/AuthContext';
 
 function initials(name) {
   if (!name) return '';
-  const parts = name.trim().split(/\s+/);
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '';
   return parts.slice(0, 2).map((p) => p[0].toUpperCase()).join('');
 }
 
@@ -55,13 +56,30 @@ export default function Profile() {
     return null;
   }
 
-  async function handleSave(e) {
+async function handleSave(e) {
     e.preventDefault();
     setError('');
     setSuccess('');
+
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const emailPattern = /^\S+@\S+\.\S+$/;
+
+    if (!trimmedName) {
+      setError('Name cannot be empty.');
+      return;
+    }
+
+    if (!emailPattern.test(trimmedEmail)) {
+      setError('Enter a valid email address.');
+      return;
+    }
+
     setSaving(true);
     try {
-      await updateProfile({ name, email });
+      await updateProfile({ name: trimmedName, email: trimmedEmail });
+      setName(trimmedName);
+      setEmail(trimmedEmail);
       setSuccess('Profile updated.');
       setEditing(false);
     } catch (err) {
@@ -71,9 +89,15 @@ export default function Profile() {
     }
   }
 
-  async function handleLogout() {
-    await logout();
-    navigate('/login');
+async function handleLogout() {
+    try {
+      await logout();
+    } catch (err) {
+      // even if the server-side logout call fails, we still want to
+      // clear the local session and send the user back to login
+    } finally {
+      navigate('/login');
+    }
   }
 
   return (
